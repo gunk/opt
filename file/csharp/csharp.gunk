@@ -1,0 +1,4 @@
+package csharp
+
+// Namespace is the csharp_namespace option.
+type Namespace string

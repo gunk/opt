@@ -1,0 +1,4 @@
+package enumvalues
+
+// Deprecated is the deprecated option.
+type Deprecated bool

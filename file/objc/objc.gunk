@@ -1,0 +1,4 @@
+package objc
+
+// ClassPrefix is the objc_class_prefix option.
+type ClassPrefix string

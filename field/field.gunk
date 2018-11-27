@@ -1,0 +1,10 @@
+package field
+
+// Packed is the packed option.
+type Packed bool
+
+// Lazy is the lazy option.
+type Lazy bool
+
+// Deprecated is the deprecated option.
+type Deprecated bool

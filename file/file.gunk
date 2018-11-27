@@ -1,0 +1,14 @@
+package file
+
+// Deprecated is the deprecated option.
+type Deprecated bool
+
+// OptimizeFor is the optimize_for option.
+type OptimizeFor int
+
+// Values for OptimizeFor enum.
+const (
+    Speed       OptimizeFor = 1 // default
+    CodeSize    OptimizeFor = 2
+    LiteRuntime OptimizeFor = 3
+)

@@ -1,0 +1,16 @@
+package java
+
+// Package is the java_package option.
+type Package string
+
+// OuterClassname is the java_outer_classname option.
+type OuterClassname string
+
+// MultipleFiles is the java_multiple_files option.
+type MultipleFiles bool
+
+// StringCheckUtf8 is the java_string_check_utf8 option.
+type StringCheckUtf8 bool
+
+// GenericServices is the java_generic_services option.
+type GenericServices bool

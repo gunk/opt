@@ -1,0 +1,7 @@
+package enum
+
+// AllowAlias is the allow_alias option.
+type AllowAlias bool
+
+// Deprecated is the deprecated option.
+type Deprecated bool

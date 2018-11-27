@@ -1,0 +1,14 @@
+package method
+
+// Deprecated is the deprecated option.
+type Deprecated bool
+
+// IdempotencyLevel is the idempotency_level option.
+type IdempotencyLevel int
+
+// Values for IdempotencyLevel
+const (
+    Unknown IdempotencyLevel = iota
+    NoSideEffects
+    Idempotent
+)

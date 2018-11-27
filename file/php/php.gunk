@@ -1,0 +1,13 @@
+package php
+
+// ClassPrefix is the php_class_prefix option.
+type ClassPrefix string
+
+// Namespace is the php_namespace option.
+type Namespace string
+
+// MetadataNamespace is the php_metadata_namespace option.
+type MetadataNamespace string
+
+// GenericServices is the php_generic_services option.
+type GenericServices bool

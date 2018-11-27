@@ -1,0 +1,9 @@
+package js
+
+type Type int
+
+const (
+    Normal Type = iota
+    String
+    Number
+)
