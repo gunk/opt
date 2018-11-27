@@ -1,0 +1,4 @@
+package swift
+
+// Prefix is the swift_prefix option.
+type Prefix string

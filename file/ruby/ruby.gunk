@@ -1,0 +1,4 @@
+package ruby
+
+// Package is the ruby_package option.
+type Package string

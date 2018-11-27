@@ -1,0 +1,7 @@
+package cc
+
+// EnableArenas is the cc_enable_arenas option.
+type EnableArenas bool
+
+// GenericServices is the cc_generic_services option.
+type GenericServices bool

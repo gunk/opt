@@ -1,0 +1,9 @@
+package cc
+
+type Type int
+
+const (
+    String Type = iota
+    Cord
+    StringPiece
+)

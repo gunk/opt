@@ -1,0 +1,10 @@
+package message
+
+// MessageSetWireFormat is the message_set_wire_format option.
+type MessageSetWireFormat bool
+
+// NoStandardDecriptorAccessor is the no_standard_descriptor_accessor option.
+type NoStandardDescriptorAccessor bool
+
+// Deprecated is the deprecated option.
+type Deprecated bool

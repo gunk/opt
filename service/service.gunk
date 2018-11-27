@@ -1,0 +1,4 @@
+package service
+
+// Deprecated is the deprecated option.
+type Deprecated bool
