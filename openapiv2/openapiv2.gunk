@@ -1,0 +1,26 @@
+// Package openapiv2 provides the openapiv2 matching options for gunk.
+package openapiv2
+
+// Operation is the representation of OpenAPI V2 specification operation object
+type Operation struct {
+    Tags        []string            `pb:"1"`
+    Description string              `pb:"2"`
+    Summary     string              `pb:"3"`
+    Security    map[string][]string `pb:"4"`
+}
+
+// Schema is a representation of OpenAPI v2 specification's Schema object.
+// The Schema Object allows the definition of input and output data types
+type Schema struct {
+    JSONSchema JSONSchema        `pb:"1"`
+    Example    map[string]string `pb:"2"`
+}
+
+
+// JSONSchema represents properties from JSON Schema taken, and as used, in
+// the OpenAPI v2 spec.
+type JSONSchema struct {
+    Title            string   `pb:"1"`
+    Description      string   `pb:"2"`
+}
+
