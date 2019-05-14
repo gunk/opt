@@ -1,26 +1,261 @@
 // Package openapiv2 provides the openapiv2 matching options for gunk.
 package openapiv2
 
+type SwaggerScheme int
+
+const (
+	SwaggerSchemeUNKNOWN SwaggerScheme = iota
+	HTTP
+	HTTPS
+	WS
+	WSS
+)
+
+// Swagger is a representation of OpenAPI v2 specification's Swagger object.
+type Swagger struct {
+	Swagger             string                `pb:"1" json:"swagger"`
+	Info                Info                  `pb:"2" json:"info"`
+	Host                string                `pb:"3" json:"host"`
+	BasePath            string                `pb:"4" json:"base_path"`
+	Schemes             []SwaggerScheme       `pb:"5" json:"schemes"`
+	Consumes            []string              `pb:"6" json:"consumes"`
+	Produces            []string              `pb:"7" json:"produces"`
+	Responses           map[string]Response   `pb:"10" json:"responses"`
+	SecurityDefinitions SecurityDefinitions   `pb:"11" json:"security_definitions"`
+	Security            []SecurityRequirement `pb:"12" json:"security"`
+	ExternalDocs        ExternalDocumentation `pb:"14" json:"external_docs"`
+}
+
+// SecurityDefinitions is a representation of OpenAPI v2 specification's
+// Security Definitions object.
+type SecurityDefinitions struct {
+	// A single security scheme definition, mapping a "name" to the scheme it defines.
+	Security map[string]SecurityScheme `pb:"1" json:"security"`
+}
+
+// Type of the security scheme. Valid values are "basic",
+// "apiKey" or "oauth2". Required
+type Type int
+
+const (
+	TYPE_INVALID Type = iota
+	TYPE_BASIC
+	TYPE_API_KEY
+	TYPE_OAUTH2
+)
+
+// In is the location of the API key. Valid values are "query" or "header". Required.
+type In int
+
+const (
+	IN_INVALID In = iota
+	IN_QUERY
+	IN_HEADER
+)
+
+// Flow used by the OAuth2 security scheme. Valid values are
+// "implicit", "password", "application" or "accessCode". Required.
+type Flow int
+
+const (
+	FLOW_INVALID Flow = iota
+	FLOW_IMPLICIT
+	FLOW_PASSWORD
+	FLOW_APPLICATION
+	FLOW_ACCESS_CODE
+)
+
+// SecurityScheme is a representation of OpenAPI v2 specification's
+// Security Scheme object.
+type SecurityScheme struct {
+	// Required. The type of the security scheme. Valid values are "basic",
+	// "apiKey" or "oauth2".
+	Type Type `pb:"1" json:"type"`
+	// A short description for security scheme.
+	Description string `pb:"2" json:"description"`
+	// Required. The name of the header or query parameter to be used.
+	// Valid for apiKey.
+	Name string `pb:"3" json:"name"`
+	// Required. The location of the API key. Valid values are "query" or "header".
+	// Valid for apiKey.
+	In In `pb:"4" json:"in"`
+	// Required. The flow used by the OAuth2 security scheme. Valid values are
+	// "implicit", "password", "application" or "accessCode".
+	// Valid for oauth2.
+	Flow Flow `pb:"5" json:"flow"`
+	// Required. The authorization URL to be used for this flow. This SHOULD be in
+	// the form of a URL.
+	// Valid for oauth2/implicit and oauth2/accessCode.
+	AuthorizationURL string `pb:"6" json:"authorization_url"`
+	// Required. The token URL to be used for this flow. This SHOULD be in the
+	// form of a URL.
+	//
+	// Valid for oauth2/password, oauth2/application and oauth2/accessCode.
+	TokenURL string `pb:"7" json:"token_url"`
+	// Required. The available scopes for the OAuth2 security scheme.
+	// Valid for oauth2.
+	Scopes Scopes `pb:"8" json:"scopes"`
+}
+
+// Scopes is a representation of OpenAPI v2 specification's Scopes object.
+type Scopes struct {
+	// Maps between a name of a scope to a short description of it (as the value
+	// of the property).
+	Scope map[string]string `pb:"1" json:"scope"`
+}
+
 // Operation is the representation of OpenAPI V2 specification operation object
 type Operation struct {
-    Tags        []string            `pb:"1"`
-    Description string              `pb:"2"`
-    Summary     string              `pb:"3"`
-    Security    map[string][]string `pb:"4"`
+	Tags         []string              `pb:"1" json:"tags"`
+	Summary      string                `pb:"2" json:"summary"`
+	Description  string                `pb:"3" json:"description"`
+	ExternalDocs ExternalDocumentation `pb:"4" json:"external_docs"`
+	OperationID  string                `pb:"5" json:"operation_id"`
+	Consumes     []string              `pb:"6" json:"consumes"`
+	Produces     []string              `pb:"7" json:"produces"`
+	Responses    map[string]Response   `pb:"9" json:"responses"`
+	Schemes      []string              `pb:"10" json:"schemes"`
+	Deprecated   bool                  `pb:"11" json:"deprecated"`
+	Security     []SecurityRequirement `pb:"12" json:"security"`
+}
+
+// ExternalDocumentation is a representation of OpenAPI v2 specification's
+// ExternalDocumentation object.
+type ExternalDocumentation struct {
+	Description string `pb:"1" json:"description"`
+	URL         string `pb:"2" json:"url"`
+}
+
+// Response is a representation of OpenAPI v2 specification's Response object.
+type Response struct {
+	// `Description` is a short description of the response.
+	// GFM syntax can be used for rich text representation.
+	Description string `pb:"1" json:"description"`
+	// `Schema` optionally defines the structure of the response.
+	// If `Schema` is not provided, it means there is no content to the response.
+	Schema Schema `pb:"2" json:"schema"`
+}
+
+// Info is a representation of OpenAPI v2 specification's Info object.
+type Info struct {
+	Title          string  `pb:"1" json:"title"`
+	Description    string  `pb:"2" json:"description"`
+	TermsOfService string  `pb:"3" json:"terms_of_service"`
+	Contact        Contact `pb:"4" json:"contact"`
+	License        License `pb:"5" json:"license"`
+	Version        string  `pb:"6" json:"version"`
+}
+
+// Contact is a representation of OpenAPI v2 specification's Contact object.
+type Contact struct {
+	Name  string `pb:"1" json:"name"`
+	URL   string `pb:"2" json:"url"`
+	Email string `pb:"3" json:"email"`
+}
+
+// License is a representation of OpenAPI v2 specification's License object.
+type License struct {
+	// Required. The license name used for the API.
+	Name string `pb:"1" json:"name"`
+	// A URL to the license used for the API.
+	URL string `pb:"2" json:"url"`
 }
 
 // Schema is a representation of OpenAPI v2 specification's Schema object.
 // The Schema Object allows the definition of input and output data types
 type Schema struct {
-    JSONSchema JSONSchema        `pb:"1"`
-    Example    map[string]string `pb:"2"`
+	JSONSchema    JSONSchema            `pb:"1" json:"json_schema"`
+	Discriminator string                `pb:"2" json:"discriminator"`
+	ReadOnly      bool                  `pb:"3" json:"read_only"`
+	ExternalDocs  ExternalDocumentation `pb:"5" json:"external_docs"`
+	Example       Any                   `pb:"6" json:"example"`
 }
 
+type JSONSchemaSimpleTypes int
+
+const (
+	UNKNOWN JSONSchemaSimpleTypes = iota
+	ARRAY
+	BOOLEAN
+	INTEGER
+	NULL
+	NUMBER
+	OBJECT
+	STRING
+)
 
 // JSONSchema represents properties from JSON Schema taken, and as used, in
 // the OpenAPI v2 spec.
 type JSONSchema struct {
-    Title            string   `pb:"1"`
-    Description      string   `pb:"2"`
+	// field 1 is reserved for '$id', omitted from OpenAPI v2.
+	// field 2 is reserved for '$schema', omitted from OpenAPI v2.
+	// Ref is used to define an external reference to include in the message.
+	// This could be a fully qualified proto message reference, and that type must be imported
+	// into the protofile. If no message is identified, the Ref will be used verbatim in
+	// the output.
+	// For example:
+	//  `ref: ".google.protobuf.Timestamp"`.
+	Ref string `pb:"3" json:"ref"`
+	// field 4 is reserved for '$comment', omitted from OpenAPI v2.
+	Title       string `pb:"5" json:"title"`
+	Description string `pb:"6" json:"description"`
+	Default     string `pb:"7" json:"default"`
+	ReadOnly    bool   `pb:"8" json:"read_only"`
+	// field 9 is reserved for 'examples', which is omitted from OpenAPI v2 in favor of 'example' field.
+	MultipleOf       float64 `pb:"10" json:"multiple_of"`
+	Maximum          float64 `pb:"11" json:"maximum"`
+	ExclusiveMaximum bool    `pb:"12" json:"exclusive_maximum"`
+	Minimum          float64 `pb:"13" json:"minimum"`
+	ExclusiveMinimum bool    `pb:"14" json:"exclusive_minimum"`
+	MaxLength        uint64  `pb:"15" json:"max_length"`
+	MinLength        uint64  `pb:"16" json:"min_length"`
+	Pattern          string  `pb:"17" json:"pattern"`
+	// field 18 is reserved for 'additionalItems', omitted from OpenAPI v2.
+	// field 19 is reserved for 'items', but in OpenAPI-specific way. TODO(ivucica): add 'items'?
+	MaxItems    uint64 `pb:"20" json:"max_items"`
+	MinItems    uint64 `pb:"21" json:"min_items"`
+	UniqueItems bool   `pb:"22" json:"unique_items"`
+	// field 23 is reserved for 'contains', omitted from OpenAPI v2.
+	MaxProperties uint64   `pb:"24" json:"max_properties"`
+	MinProperties uint64   `pb:"25" json:"min_properties"`
+	Required      []string `pb:"26" json:"required"`
+	// field 27 is reserved for 'additionalProperties', but in OpenAPI-specific way. TODO(ivucica): add 'additionalProperties'?
+	// field 28 is reserved for 'definitions', omitted from OpenAPI v2.
+	// field 29 is reserved for 'properties', but in OpenAPI-specific way. TODO(ivucica): add 'additionalProperties'?
+	// 30 to 33 are reserved, as the properties have been omitted from OpenAPI v2:
+	// patternProperties, dependencies, propertyNames, const
+	// Items in 'array' must be unique.
+	Array []string                `pb:"34" json:"array"`
+	Type  []JSONSchemaSimpleTypes `pb:"35" json:"type"`
+	// 36 to 41 are reserved, as the properties have been omitted from OpenAPI v2:
+	// format, contentMediaType, contentEncoding, if, then, else
+	// field 42 is reserved for 'allOf', but in OpenAPI-specific way. TODO(ivucica): add 'allOf'?
+	// 43 to 45 are reserved, as the properties have been omitted from OpenAPI v2:
+	// anyOf, oneOf, not
 }
 
+// Any contains an arbitrary serialized protocol buffer message along with a
+// URL that describes the type of the serialized message.
+type Any struct {
+	TypeURL string `pb:"1" json:"type_url"`
+	// Must be a valid serialized protocol buffer of the above specified type.
+	Value []byte `pb:"2" json:"value"`
+}
+
+// SecurityRequirement_SecurityRequirementValue holds a list of scopes.
+// If the security scheme is of type "oauth2", then the value is a list of
+// scope names required for the execution. For other security scheme types,
+// the array MUST be empty.
+type SecurityRequirement_SecurityRequirementValue struct {
+	Scope []string `pb:"1" json:"scope"`
+}
+
+// SecurityRequirement is a representation of OpenAPI v2 specification's
+// Security Requirement object.
+type SecurityRequirement struct {
+	// Each name must correspond to a security scheme which is declared in
+	// the Security Definitions. If the security scheme is of type "oauth2",
+	// then the value is a list of scope names required for the execution.
+	// For other security scheme types, the array MUST be empty.
+	SecurityRequirement map[string]SecurityRequirement_SecurityRequirementValue `pb:"1" json:"security_requirement"`
+}
