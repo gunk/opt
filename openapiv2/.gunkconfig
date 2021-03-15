@@ -1,0 +1,5 @@
+[protoc]
+version=v3.9.1
+
+[generate go]
+plugin_version=v1.25.0
