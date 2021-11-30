@@ -1,0 +1,4 @@
+package proto
+
+// Package is the proto package name.
+type Package string
