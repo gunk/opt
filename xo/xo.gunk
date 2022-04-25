@@ -27,3 +27,6 @@ type Embed bool
 // Default is the default value option for the corresponding field.
 type Default string 
 
+// SkipPrefix is an option to skip package prefixes when creating the table
+// name.
+type SkipPrefix bool
