@@ -38,3 +38,11 @@ type HasMany struct {
 	// TypeSuffix is the suffix of the protobuf type of the element.
 	TypeSuffix string
 }
+
+// Ref is an option to add a referential relation to a message.
+type Ref struct {
+	// TypeSuffix is a unique suffix identifying the type of the referenced table.
+	TypeSuffix string
+	// FieldName is the name of the field that the current field references.
+	FieldName string
+}
