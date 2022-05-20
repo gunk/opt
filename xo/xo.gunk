@@ -30,3 +30,11 @@ type Default string
 // SkipPrefix is an option to skip package prefixes when creating the table
 // name.
 type SkipPrefix bool
+
+// HasMany is an option to add a one-to-many relation to a message.
+type HasMany struct {
+	// Name is the unique name identifying the relation.
+	Name string
+	// TypeSuffix is the suffix of the protobuf type of the element.
+	TypeSuffix string
+}
