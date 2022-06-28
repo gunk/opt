@@ -8,3 +8,17 @@ type NoStandardDescriptorAccessor bool
 
 // Deprecated is the deprecated option.
 type Deprecated bool
+
+// Ignore is the option to omit a message from a specific generator.
+type Ignore struct {
+	// Generator is the name of the generator command to ignore, as defined in
+	// the gunk config.
+	//
+	// For example
+	//
+	//     [generate openapiv2]
+	//       ...
+	//
+	// Will ignore the definition from the `openapiv2` generator.
+	Generator string
+}
